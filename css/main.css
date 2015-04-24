@@ -11,9 +11,6 @@ body {
     font-weight: 300;
 }
 
-
-
-
 .centeredbox {
 
 	width: 800px;
@@ -57,6 +54,12 @@ tree-chart{
       /*border: 1px solid white;*/
 }
 
+.facets .facet.btn {
+    border-bottom-width: 0;
+}
+.facets .facet.btn:last-child {
+    border-bottom-width: 1px;
+}
 
 .resultitem {
 	width: 100px;
@@ -159,8 +162,6 @@ table {
 }
 
 table tr td {
-
-	border: 1px solid black;
 }
 
 .resultPanel {
@@ -191,7 +192,7 @@ snap-content {
     background-repeat: repeat;
 }
 
-
-
-
+[ng-click] {
+    cursor: pointer;
+}
 

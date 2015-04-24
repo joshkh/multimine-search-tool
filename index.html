@@ -2,86 +2,94 @@
 
 <html lang="en">
 
-	<head>
-		<meta charset="utf-8">
-		<title>Multimine Search Version</title>
-		<link rel="stylesheet" href="css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/main.css">
-		
-		
-		<script charset="UTF-8"
-		            data-main="main"
-		            type="text/javascript"
-		            src="bower_components/requirejs/require.js">
-		</script>
-		
-		
-		<style>[ng-cloak] { display: none; }</style>
-	</head>
+<head>
+  <meta charset="utf-8">
+  <title>Multimine Search Version</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/search-results.css">
+  <link rel="stylesheet" href="http://cdn.intermine.org/css/font-awesome/4.x/css/font-awesome.min.css">
 
-	<body ng-controller="MainCtrl">
-
- 		<div class="row">
-
-			<div class="hcenteredbox">
-
-				<div class="searchbox">
-
-					<img src="images/logo.png">
-
-					<form class="navbar-form halfwidth" role="search" ng-submit="getCommonItems(searchterm)">
-				        <div class="input-group input-group-lg">
-				            <input type="text"class="form-control" placeholder="long tail, lola*, Parkinson, MGI:96677" name="searchterm" id="searchterm" ng-model="search">
-				            <div class="input-group-btn">
-				                <button snap-toggle ng-click="callme(search)" class="btn btn-default" type="submit">Search </button>
-				            </div>
-				        </div>
-				    </form>
-
-			    	<h1 ng-show="results.length > 0">{{results.length}} results in {{categories.length}} categories.</h1>
-
-		    	</div>
-			</div>
+  <script charset="UTF-8"
+          data-main="main"
+          type="text/javascript"
+          src="bower_components/requirejs/require.js">
+  </script>
 
 
-		</div>
+  <style>[ng-cloak] { display: none; }</style>
+</head>
 
-		<div class="row">
+<body ng-cloak ng-controller="DemoCtrl">
 
-<!-- 
-    		<div class="col-xs-2">
-        		<div class="panel panel-primary">
-        			<div class="panel-heading well-sm">Filters</div>
-        			<h4>Organisms</h4>
+  <div class="container-fluid">
 
-		        	<div ng-click="toggleFilter('genusFilter', orgs.genus)"
-				  		class="category"
-				  		ng-class="{selected: genusFilter.indexOf(orgs.genus) != -1}"
-				  		ng-repeat="orgs in orgnest">{{orgs.genus}}</div>
+    <div class="row" ng-controller="SearchInputCtrl as search">
 
-		  			<div class="row"></div>
+      <div class="hcenteredbox">
 
-        			<h4>Data Types</h4>
+        <div class="searchbox">
 
-		        	<div ng-click="toggleFilter('categoryFilter', category.label)" class="category" ng-class="{selected: categoryFilter.indexOf(category.label) != -1}" ng-repeat="category in categories">{{category.label}} ({{category.value}})
-			  		</div>
-	  		
-        		</div>
-    		</div> -->
+          <form class="navbar-form halfwidth"
+              role="search"
+              ng-submit="search.searchFor(searchterm)">
+            <div class="input-group input-group-lg">
+              <input type="text"class="form-control"
+                     placeholder="long tail, lola*, Parkinson, MGI:96677"
+                     name="searchterm" id="searchterm" ng-model="searchterm">
+              <div class="input-group-btn">
+                <button snap-toggle
+                        class="btn btn-default"
+                        type="submit">Search </button>
+              </div>
+            </div>
+          </form>
 
-    		<div class="col-xs-12">
-
-    			<div class="panel panel-primary">
-
-    				<div class="panel-heading well-sm">Results</div>
-
-
+        </div>
+      </div>
 
 
-		    		<ng-include src="'template.html'"></ng-include>
-				</div>
-    		</div>
-		</div>
+    </div>
 
-	</body>
+    <div class="row" ng-controller="SearchResultsCtrl" ng-show="step.data.searchTerm">
+
+      <div class="col-xs-3">
+
+        <ng-include src="'facets.html'" ng-controller="FacetCtrl as facet"></ng-include>
+
+        <div class="panel panel-default messages" ng-controller="MessagesCtrl as msgCtrl">
+          <div class="panel-heading" ng-click="msgCtrl.collapsed = !msgCtrl.collapsed">
+              <i class="fa" ng-class="{'fa-caret-right': msgCtrl.collapsed, 'fa-caret-down': !msgCtrl.collapsed}"></i>
+              {{sumAvailable}} Selected Items
+          </div>
+          <div class="panel-body">
+            <div class="list-group-item"
+                 ng-show="!msgCtrl.collapsed && data.request.ids.length"
+                 ng-repeat="(key, data) in messages.ids">
+              {{data.request.ids.length}}
+              {{data.request.type}}s at
+              <code>{{data.service.name}}</code>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-xs-9">
+
+        <div class="panel panel-default">
+
+          <div class="panel-heading" ng-controller="HeadingCtrl as heading">
+              <ng-include src="'panel-heading.html'"></ng-include>
+          </div>
+
+          <ng-include src="'template.html'"></ng-include>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+</body>
 </html>
